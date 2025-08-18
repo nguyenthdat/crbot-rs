@@ -1,0 +1,27 @@
+digraph ClashRoyaleRust {
+    rankdir = LR;
+    node [shape = box; style = rounded; fontname = "Arial";];
+    
+    subgraph cluster_runtime {
+        label = "Runtime";
+        style = dashed;
+        Game [label = "Clash Royale (BlueStacks)";];
+        IO [label = "Input (mouse/keyboard)\n(enigo/rdev)";];
+        Grab [label = "Screen Capture\n(screenshots/scrap)";];
+    }
+    
+    CV [label = "Local Inference Server (axum)\n- ONNXRuntime/tch\n- YOLO for troops\n- Classifier for cards";];
+    Env [label = "Env (Rust)\n- State builder\n- Reward\n- Actions grid";];
+    DQN [label = "DQN (burn)\n- Q-network\n- Target net\n- Replay buffer";];
+    Loop [label = "Training Loop\n- Episodes\n- ε-greedy\n- Save checkpoints";];
+    
+    Game -> Grab [label = "frames";];
+    Grab -> Env [label = "images (battlefield/cards)";];
+    Env -> CV [label = "/detect & /cards";];
+    CV -> Env [label = "predictions JSON";];
+    Env -> DQN [label = "state vector";];
+    DQN -> Env [label = "action (card, x, y)";];
+    Env -> IO [label = "play card @ coords";];
+    Env -> Loop [label = "(s, a, r, s')";];
+    DQN -> Loop [label = "opt step / target update";];
+}

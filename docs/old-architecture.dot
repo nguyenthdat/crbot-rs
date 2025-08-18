@@ -1,0 +1,28 @@
+digraph ClashRoyaleBot {
+    rankdir = LR;
+    node [shape = box; style = rounded; fontname = "Arial";];
+    
+    subgraph cluster_game {
+        label = "Game (Clash Royale in BlueStacks)";
+        style = dashed;
+        Screen [label = "Game Screen (visuals)";];
+        Input [label = "Mouse/Keyboard Input";];
+    }
+    
+    Actions [label = "Actions.py\n(pyautogui: screenshots,\nclicks, key presses)";];
+    Env [label = "env.py\n(ClashRoyaleEnv:\nstate, reward, actions)";];
+    DQN [label = "DQNAgent\n(Deep Q-Network:\nPyTorch model)";];
+    Train [label = "train.py\n(training loop,\nmodel saving/loading)";];
+    
+    Screen -> Actions [label = "Screenshots";];
+    Actions -> Env [label = "Processed game info";];
+    Env -> DQN [label = "State vector";];
+    DQN -> Env [label = "Chosen Action";];
+    Env -> Actions [label = "Execute action";];
+    Actions -> Input [label = "Simulated clicks/keys";];
+    Screen -> Env [label = "Troop/Card detection";];
+    
+    Env -> Train [label = "Episodes,\nRewards";];
+    DQN -> Train [label = "Model updates";];
+    Train -> DQN [label = "Backpropagation,\nTarget update";];
+}
