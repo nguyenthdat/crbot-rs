@@ -24,7 +24,6 @@ burn = { version = "0.18.0", features = [
     "autotune",
     "autodiff",
     "cuda",
-
     "tui",
     "metrics",
     "train",

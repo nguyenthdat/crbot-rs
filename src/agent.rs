@@ -88,7 +88,7 @@ impl<B: AutodiffBackend> DqnAgent<B> {
         );
         let q = self.model.forward(x); // [1, A]
         let (_, idx) = q.max_dim_with_indices(1); // [1,1] values + [1,1] indices
-        idx.into_data().as_slice::<i64>().unwrap()[0] as usize
+        idx.into_data().as_slice::<i32>().unwrap()[0] as usize
     }
 
     /// Hard update: target <- model (copy weights).
